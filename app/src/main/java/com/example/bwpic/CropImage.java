@@ -42,7 +42,7 @@ public class CropImage extends AppCompatActivity {
     static Mat croppedMat;
 
     private static SelectableImageView imageView;
-    private static Bitmap originalBitmap;
+    public static Bitmap originalBitmap;
     public static boolean selectionMade = false;
     private static Rect roiRect;
     private ImageButton cropBT, downloadBt;
@@ -65,7 +65,7 @@ public class CropImage extends AppCompatActivity {
         downloadBt = findViewById(R.id.downloadBt);
         cropBT = findViewById(R.id.cropBt);
 
-        setOriginalBitmap();
+        imageView.setImageBitmap(originalBitmap);
         cropBT.setOnClickListener(v -> Reset());
         downloadBt.setOnClickListener(v -> download());
     }
@@ -98,15 +98,15 @@ public class CropImage extends AppCompatActivity {
     }
 
 
-    public static void setOriginalBitmap() {
-        try {
-            pictureResult.toBitmap(bitmap -> originalBitmap = bitmap);
-            imageView.setImageBitmap(originalBitmap);
-        } catch (UnsupportedOperationException e) {
-            imageView.setImageDrawable(new ColorDrawable(Color.GREEN));
-            Toast.makeText(imageView.getContext(), "Can't preview this format: " + pictureResult.getFormat(), Toast.LENGTH_LONG).show();
-        }
-    }
+//    public static void setOriginalBitmap() {
+//        try {
+//            pictureResult.toBitmap(bitmap -> originalBitmap = bitmap);
+//            imageView.setImageBitmap(originalBitmap);
+//        } catch (UnsupportedOperationException e) {
+//            imageView.setImageDrawable(new ColorDrawable(Color.GREEN));
+//            Toast.makeText(imageView.getContext(), "Can't preview this format: " + pictureResult.getFormat(), Toast.LENGTH_LONG).show();
+//        }
+//    }
 
     @Override
     protected void onDestroy() {

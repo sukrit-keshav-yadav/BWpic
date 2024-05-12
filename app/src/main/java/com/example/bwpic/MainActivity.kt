@@ -3,10 +3,12 @@ package com.example.bwpic
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.ImageFormat
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.YuvImage
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -101,7 +103,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 message("Captured while taking video. Size=" + result.size, false)
                 return
             }
-
+            try {
+                result.toBitmap() { bitmap -> CropImage.originalBitmap = bitmap }
+            } catch (e: UnsupportedOperationException) {
+                Log.d("TAG", "error on setting bitmap")
+            }
             // This can happen if picture was taken with a gesture.
             val callbackTime = System.currentTimeMillis()
             if (captureTime == 0L) captureTime = callbackTime - 300
