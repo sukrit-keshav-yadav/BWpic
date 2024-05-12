@@ -1,5 +1,6 @@
 package com.example.bwpic
 
+import android.content.ContentValues
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.ImageFormat
@@ -7,6 +8,7 @@ import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.YuvImage
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
@@ -21,6 +23,7 @@ import com.otaliastudios.cameraview.controls.Facing
 import com.otaliastudios.cameraview.controls.Preview
 import com.otaliastudios.cameraview.frame.Frame
 import com.otaliastudios.cameraview.frame.FrameProcessor
+import org.opencv.android.OpenCVLoader
 import java.io.ByteArrayOutputStream
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -36,6 +39,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (OpenCVLoader.initDebug()) {
+            Log.d(ContentValues.TAG, "OpenCV Loading Success")
+            Toast.makeText(this, "OpenCV Loading Success", Toast.LENGTH_SHORT).show()
+        } else {
+            Log.e(ContentValues.TAG, "OpenCV Loading Error")
+            Toast.makeText(this, "Error Loading OpenCV", Toast.LENGTH_SHORT).show()
+        }
 
         CameraLogger.setLogLevel(CameraLogger.LEVEL_VERBOSE)
         camera.setLifecycleOwner(this)
