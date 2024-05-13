@@ -60,6 +60,15 @@
         android:textStyle="bold"
         android:textSize="15sp"/>
 
+    <ImageView
+        android:id="@+id/close"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_close_24"/>
+
 
     <ImageButton
         android:id="@+id/cropBt"

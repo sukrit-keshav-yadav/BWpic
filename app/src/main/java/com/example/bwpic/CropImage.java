@@ -1,14 +1,17 @@
 package com.example.bwpic;
 
+import static android.app.ProgressDialog.show;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.storage.StorageManager;
@@ -17,6 +20,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -28,7 +32,7 @@ import com.otaliastudios.cameraview.PictureResult;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
-import org.opencv.core.Rect;
+//import org.opencv.core.Rect;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,10 +46,11 @@ public class CropImage extends AppCompatActivity {
     static Mat croppedMat;
 
     private static SelectableImageView imageView;
-    public static Bitmap originalBitmap;
+    private static Bitmap originalBitmap;
     public static boolean selectionMade = false;
     private static Rect roiRect;
     private ImageButton cropBT, downloadBt;
+    private ImageView close;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,13 +66,31 @@ public class CropImage extends AppCompatActivity {
             Toast.makeText(this, "Error Loading OpenCV", Toast.LENGTH_SHORT).show();
         }
 
+//        Intent intent=new Intent() ;
+//        originalBitmap = intent.getParcelableExtra("bitmapImage");
+        try {
+            pictureResult.toBitmap(bitmap -> originalBitmap=bitmap);
+            Toast.makeText(this,"Bitmap conversion success",Toast.LENGTH_LONG).show();
+        } catch ( UnsupportedOperationException e) {
+            Log.d("TAG", "error on setting bitmap");
+        }
+
+
         imageView = findViewById(R.id.imageView);
         downloadBt = findViewById(R.id.downloadBt);
         cropBT = findViewById(R.id.cropBt);
+        close = findViewById(R.id.close);
 
         imageView.setImageBitmap(originalBitmap);
         cropBT.setOnClickListener(v -> Reset());
         downloadBt.setOnClickListener(v -> download());
+        close.setOnClickListener(v -> closeActivity());
+    }
+
+    private void closeActivity() {
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void download() {
@@ -252,16 +275,18 @@ public class CropImage extends AppCompatActivity {
         }
 
         private Bitmap cropImage(Rect roiRect) {
-            if ((roiRect.x - roiRect.width >= 50 || roiRect.width - roiRect.x >= 50) &&
-                    (roiRect.y - roiRect.height >= 50 || roiRect.height - roiRect.y >= 50)) {
-                if (originalBitmap!=null){
-                Utils.bitmapToMat(originalBitmap, originalMat);
-                }else{
-                    Reset();
-                }
-                croppedMat = new Mat(originalMat,roiRect);
-                Utils.matToBitmap(croppedMat,croppedBitmap);
-//                croppedBitmap = Bitmap.createBitmap(originalBitmap, roiRect.left, roiRect.top, roiRect.width(), roiRect.height());
+//            if ((roiRect.x - roiRect.width >= 50 || roiRect.width - roiRect.x >= 50) &&
+//                    (roiRect.y - roiRect.height >= 50 || roiRect.height - roiRect.y >= 50)) {
+                if ((roiRect.left - roiRect.right >= 50 || roiRect.right - roiRect.left >= 50) &&
+                        (roiRect.top - roiRect.bottom >= 50 || roiRect.bottom - roiRect.top >= 50)) {
+//                if (originalBitmap!=null){
+//                Utils.bitmapToMat(originalBitmap, originalMat);
+//                }else{
+//                    Reset();
+//                }
+//                croppedMat = new Mat(originalMat,roiRect);
+//                Utils.matToBitmap(croppedMat,croppedBitmap);
+                croppedBitmap = Bitmap.createBitmap(originalBitmap, roiRect.left, roiRect.top, roiRect.width(), roiRect.height());
             } else {
                 croppedBitmap = originalBitmap;
                 selectionMade = false;

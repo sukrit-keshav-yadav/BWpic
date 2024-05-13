@@ -2,6 +2,7 @@ package com.example.bwpic
 
 import android.content.ContentValues
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.ImageFormat
@@ -44,10 +45,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         if (OpenCVLoader.initDebug()) {
             Log.d(ContentValues.TAG, "OpenCV Loading Success")
-            Toast.makeText(this, "OpenCV Loading Success", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "OpenCV Loading Success", Toast.LENGTH_SHORT).show()
         } else {
             Log.e(ContentValues.TAG, "OpenCV Loading Error")
-            Toast.makeText(this, "Error Loading OpenCV", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "Error Loading OpenCV", Toast.LENGTH_SHORT).show()
         }
 
         CameraLogger.setLogLevel(CameraLogger.LEVEL_VERBOSE)
@@ -103,8 +104,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 message("Captured while taking video. Size=" + result.size, false)
                 return
             }
+            var resultBitmap : Bitmap? = null;
             try {
-                result.toBitmap() { bitmap -> CropImage.originalBitmap = bitmap }
+                result.toBitmap() { bitmap -> resultBitmap = bitmap!! }
+                Toast.makeText(this@MainActivity,"Bitmap conversion success",Toast.LENGTH_LONG).show()
             } catch (e: UnsupportedOperationException) {
                 Log.d("TAG", "error on setting bitmap")
             }
@@ -115,6 +118,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             CropImage.pictureResult = result
             val intent = Intent(this@MainActivity, CropImage::class.java)
             intent.putExtra("delay", callbackTime - captureTime)
+            intent.putExtra("bitmapImage", resultBitmap)
             startActivity(intent)
             captureTime = 0
             LOG.w("onPictureTaken called! Launched activity.")
