@@ -62,8 +62,8 @@
 
     <ImageView
         android:id="@+id/close"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="20dp"
@@ -94,6 +94,20 @@
         app:layout_constraintBottom_toBottomOf="@id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/cropBt"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <ImageButton
+        android:id="@+id/success"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:background="#00000000"
+        android:padding="20dp"
+        android:visibility="gone"
+        android:scaleType="fitXY"
+        android:src="@drawable/success"
+        app:layout_constraintBottom_toBottomOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="@id/downloadBt"
+        app:layout_constraintStart_toStartOf="@id/downloadBt"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <androidx.constraintlayout.widget.Guideline

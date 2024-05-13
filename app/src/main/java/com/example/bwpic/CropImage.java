@@ -19,6 +19,7 @@ import android.os.storage.StorageVolume;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -49,7 +50,9 @@ public class CropImage extends AppCompatActivity {
     private static Bitmap originalBitmap;
     public static boolean selectionMade = false;
     private static Rect roiRect;
-    private ImageButton cropBT, downloadBt;
+    public ImageButton cropBT;
+    public ImageButton downloadBt;
+    public static ImageButton successBt;
     private ImageView close;
 
     @Override
@@ -79,6 +82,7 @@ public class CropImage extends AppCompatActivity {
         imageView = findViewById(R.id.imageView);
         downloadBt = findViewById(R.id.downloadBt);
         cropBT = findViewById(R.id.cropBt);
+        successBt = findViewById(R.id.success);
         close = findViewById(R.id.close);
 
         imageView.setImageBitmap(originalBitmap);
@@ -114,6 +118,7 @@ public class CropImage extends AppCompatActivity {
             FileOutputStream fileOutputStream = new FileOutputStream(fileImage);
             fileOutputStream.write(bytesArray);
             fileOutputStream.close();
+            successBt.setVisibility(View.VISIBLE);
             Toast.makeText(this, "Image saved sucessfully", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -161,6 +166,7 @@ public class CropImage extends AppCompatActivity {
         imageView.setImageBitmap(originalBitmap);
         selectionMade = false;
         roiRect = null;
+        successBt.setVisibility(View.GONE);
     }
 
     public static class SelectableImageView extends AppCompatImageView {
