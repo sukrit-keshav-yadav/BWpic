@@ -4,12 +4,10 @@ import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.ImageFormat
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.YuvImage
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -29,7 +27,7 @@ import com.otaliastudios.cameraview.frame.FrameProcessor
 import org.opencv.android.OpenCVLoader
 import java.io.ByteArrayOutputStream
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class CameraActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
         private val LOG = CameraLogger.create("SukritAssignment")
         private const val USE_FRAME_PROCESSOR = false
@@ -41,7 +39,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_camera)
 
         if (OpenCVLoader.initDebug()) {
             Log.d(ContentValues.TAG, "OpenCV Loading Success")
@@ -107,7 +105,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             var resultBitmap : Bitmap? = null;
             try {
                 result.toBitmap() { bitmap -> resultBitmap = bitmap!! }
-                Toast.makeText(this@MainActivity,"Bitmap conversion success",Toast.LENGTH_LONG).show()
+                Toast.makeText(this@CameraActivity,"Bitmap conversion success",Toast.LENGTH_LONG).show()
             } catch (e: UnsupportedOperationException) {
                 Log.d("TAG", "error on setting bitmap")
             }
@@ -116,7 +114,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             if (captureTime == 0L) captureTime = callbackTime - 300
             LOG.w("onPictureTaken called! Launching activity. Delay:", callbackTime - captureTime)
             CropImage.pictureResult = result
-            val intent = Intent(this@MainActivity, CropImage::class.java)
+            val intent = Intent(this@CameraActivity, CropImage::class.java)
             intent.putExtra("delay", callbackTime - captureTime)
             intent.putExtra("bitmapImage", resultBitmap)
             startActivity(intent)

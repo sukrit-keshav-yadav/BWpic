@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "BWpic"
 include(":app")
-include (":openCV")
+include (":OpenCV")
