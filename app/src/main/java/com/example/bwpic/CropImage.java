@@ -31,8 +31,8 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.Rect;
-//import android.graphics.Rect;
+//import org.opencv.core.Rect;
+import android.graphics.Rect;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -279,21 +279,21 @@ public class CropImage extends AppCompatActivity {
         }
 
         private Bitmap cropImage(Rect roiRect) {
-            if ((roiRect.x - roiRect.width >= 50 || roiRect.width - roiRect.x >= 50) &&
-                    (roiRect.y - roiRect.height >= 50 || roiRect.height - roiRect.y >= 50)) {
-//                if ((roiRect.left - roiRect.right >= 50 || roiRect.right - roiRect.left >= 50) &&
-//                        (roiRect.top - roiRect.bottom >= 50 || roiRect.bottom - roiRect.top >= 50)) {
-                if (originalBitmap != null) {
-                    originalMat = new Mat(originalBitmap.getWidth(), originalBitmap.getHeight(), CvType.CV_8UC1);
-                    Utils.bitmapToMat(originalBitmap, originalMat);
-                } else {
-                    Reset();
-                }
+//            if ((roiRect.x - roiRect.width >= 50 || roiRect.width - roiRect.x >= 50) &&
+//                    (roiRect.y - roiRect.height >= 50 || roiRect.height - roiRect.y >= 50)) {
+                if ((roiRect.left - roiRect.right >= 50 || roiRect.right - roiRect.left >= 50) &&
+                        (roiRect.top - roiRect.bottom >= 50 || roiRect.bottom - roiRect.top >= 50)) {
+//                if (originalBitmap != null) {
+//                    originalMat = new Mat(originalBitmap.getWidth(), originalBitmap.getHeight(), CvType.CV_8UC1);
+//                    Utils.bitmapToMat(originalBitmap, originalMat);
+//                } else {
+//                    Reset();
+//                }
 //                croppedMat = new Mat(originalMat.width(),originalMat.height(),CvType.CV_8UC1);
-                croppedMat = new Mat(originalMat, roiRect);
-                croppedBitmap = Bitmap.createBitmap(croppedMat.width(),croppedMat.height(), Bitmap.Config.ARGB_8888);
-                Utils.matToBitmap(croppedMat, croppedBitmap);
-//                croppedBitmap = Bitmap.createBitmap(originalBitmap, roiRect.left, roiRect.top, roiRect.width(), roiRect.height());
+//                croppedMat = new Mat(originalMat, roiRect);
+//                croppedBitmap = Bitmap.createBitmap(croppedMat.width(),croppedMat.height(), Bitmap.Config.ARGB_8888);
+//                Utils.matToBitmap(croppedMat, croppedBitmap);
+                croppedBitmap = Bitmap.createBitmap(originalBitmap, roiRect.left, roiRect.top, roiRect.width(), roiRect.height());
             } else {
                 croppedBitmap = originalBitmap;
                 selectionMade = false;
